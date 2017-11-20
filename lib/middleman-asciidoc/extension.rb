@@ -127,7 +127,8 @@ module Middleman
           end
           if !(page.key? :date) && (doc.attr? 'revdate')
             begin
-              page[:date] = ::DateTime.parse(doc.attr 'revdate').to_time
+              # hack to use app time zone, but only if time zone is not specified
+              page[:date] = (::DateTime.parse %(#{doc.attr 'revdate'} #{::Time.zone.formatted_offset})).to_time
             rescue
             end
           end
